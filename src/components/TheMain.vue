@@ -11,8 +11,15 @@ import ThePagination from '@/components/ThePagination.vue'
 import MyCardSize from '@/components/MyCard/MyCardSize.vue'
 
 const stateStore = useStateStore()
-const { getCharacters, setFavouritesData, editFilter, editSearch, editCurrentPage, addToFavourites, removeToFavourites } =
-  useStateStore()
+const {
+  getCharacters,
+  setFavouritesData,
+  editFilter,
+  editSearch,
+  editCurrentPage,
+  addToFavourites,
+  removeToFavourites
+} = useStateStore()
 const currentSize = ref('medium')
 
 const editSize = (size: string) => {
@@ -32,14 +39,22 @@ onMounted(() => {
       <MyFilters :filters="stateStore.filters" @editFilter="editFilter" />
       <MyCardSize @editSize="editSize" />
     </div>
-    <ThePagination :max-pages="stateStore.maxPages" :current-page="stateStore.currentPage"
-      @setCurrentPage="editCurrentPage" />
+    <ThePagination
+      :max-pages="stateStore.maxPages"
+      :current-page="stateStore.currentPage"
+      @setCurrentPage="editCurrentPage"
+    />
     <MyLoader v-if="stateStore.isLoading" />
     <template v-else>
       <MyError v-if="stateStore.isError" />
       <ul v-else class="content-cards" :class="`content-cards-${currentSize}`">
-        <MyCard v-for="card in stateStore.characters" :key="card.id" :character="card" @addToFavourites="addToFavourites"
-          @removeToFavourites="removeToFavourites" />
+        <MyCard
+          v-for="card in stateStore.characters"
+          :key="card.id"
+          :character="card"
+          @addToFavourites="addToFavourites"
+          @removeToFavourites="removeToFavourites"
+        />
       </ul>
     </template>
   </main>
