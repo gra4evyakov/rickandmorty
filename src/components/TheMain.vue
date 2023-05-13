@@ -10,32 +10,18 @@ import MyError from '@/components/MyError.vue'
 import ThePagination from '@/components/ThePagination.vue'
 import MyCardSize from '@/components/MyCard/MyCardSize.vue'
 
-import { type Character } from '@/services/interfaces/character'
-
 const stateStore = useStateStore()
+const { getCharacters, setFavouritesData, editFilter, editSearch, editCurrentPage, addToFavourites, removeToFavourites } =
+  useStateStore()
 const currentSize = ref('medium')
 
-const editFilter = (filter: string) => {
-  stateStore.editFilter(filter)
-}
-const editSearch = (value: string) => {
-  stateStore.editSearch(value)
-}
-const editCurrentPage = (page: number) => {
-  stateStore.editCurrentPage(page)
-}
 const editSize = (size: string) => {
   currentSize.value = size
 }
-const addToFavourites = (card: Character) => {
-  stateStore.addToFavourites(card)
-}
-const removeToFavourites = (id: number) => {
-  stateStore.removeToFavourites(id)
-}
+
 onMounted(() => {
-  stateStore.getCharacters()
-  stateStore.setFavouritesData()
+  getCharacters()
+  setFavouritesData()
 })
 </script>
 
@@ -46,22 +32,14 @@ onMounted(() => {
       <MyFilters :filters="stateStore.filters" @editFilter="editFilter" />
       <MyCardSize @editSize="editSize" />
     </div>
-    <ThePagination
-      :max-pages="stateStore.maxPages"
-      :current-page="stateStore.currentPage"
-      @setCurrentPage="editCurrentPage"
-    />
+    <ThePagination :max-pages="stateStore.maxPages" :current-page="stateStore.currentPage"
+      @setCurrentPage="editCurrentPage" />
     <MyLoader v-if="stateStore.isLoading" />
     <template v-else>
       <MyError v-if="stateStore.isError" />
       <ul v-else class="content-cards" :class="`content-cards-${currentSize}`">
-        <MyCard
-          v-for="card in stateStore.characters"
-          :key="card.id"
-          :character="card"
-          @addToFavourites="addToFavourites(card)"
-          @removeToFavourites="removeToFavourites(card.id)"
-        />
+        <MyCard v-for="card in stateStore.characters" :key="card.id" :character="card"
+          @addToFavourites="addToFavourites(card)" @removeToFavourites="removeToFavourites(card.id)" />
       </ul>
     </template>
   </main>
