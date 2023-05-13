@@ -38,8 +38,8 @@ onMounted(() => {
     <template v-else>
       <MyError v-if="stateStore.isError" />
       <ul v-else class="content-cards" :class="`content-cards-${currentSize}`">
-        <MyCard v-for="card in stateStore.characters" :key="card.id" :character="card"
-          @addToFavourites="addToFavourites(card)" @removeToFavourites="removeToFavourites(card.id)" />
+        <MyCard v-for="card in stateStore.characters" :key="card.id" :character="card" @addToFavourites="addToFavourites"
+          @removeToFavourites="removeToFavourites" />
       </ul>
     </template>
   </main>

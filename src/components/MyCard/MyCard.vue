@@ -13,10 +13,10 @@ const stateStore = useStateStore()
 
 const emit = defineEmits(['addToFavourites', 'removeToFavourites'])
 const addToFavourites = () => {
-  emit('addToFavourites')
+  emit('addToFavourites', props.character)
 }
 const removeToFavourites = () => {
-  emit('removeToFavourites')
+  emit('removeToFavourites', props.character.id)
 }
 const isFavourites = computed((): boolean => {
   return stateStore.favourites.some((item: Character) => item.id === props.character.id)
