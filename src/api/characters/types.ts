@@ -1,5 +1,4 @@
 import { type Ref } from 'vue'
-import { type Character } from '@/services/interfaces/character'
 
 export type RequestParams = {
   name?: string
@@ -10,10 +9,11 @@ export type RequestParams = {
   gender?: string
 }
 
-export type Request = {
-  data: Ref<Character[]>
+export type RequestResult<T> = {
+  data: Ref<T | null>
   isLoading: Ref<boolean>
   isError: Ref<boolean>
-  pages: Ref<number>
-  loadCharacters: (params?: RequestParams) => Promise<void>
+  execute: (params?: RequestParams) => Promise<void>
 }
+
+export type RequestFunction<T> = (params?: RequestParams) => Promise<T>

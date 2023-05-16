@@ -50,7 +50,7 @@ onMounted(() => {
       <MyError v-if="stateStore.isError" />
       <ul v-else class="content-cards" :class="`content-cards-${currentSize}`">
         <MyCard
-          v-for="card in stateStore.data"
+          v-for="card in stateStore.characters"
           :key="card.id"
           :character="card"
           @addToFavourites="addToFavourites"

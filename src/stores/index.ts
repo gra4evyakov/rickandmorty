@@ -1,22 +1,26 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import { useRequest } from '@/api/characters/requests'
+import { useGetCharacters } from '@/api/characters/requests'
 import { type Character } from '@/services/interfaces/character'
 
 export const useStateStore = defineStore('state', () => {
+  const characters = computed(() => data?.value?.results)
+
   const favourites = ref<Character[]>([])
   const filters = ref<string[]>(['All', 'Human', 'Animal', 'Alien'])
 
   const currentFilter = ref<string>('All')
   const currentSearch = ref<string>('')
-  const currentPage = ref<number>(1)
 
-  const { data, isLoading, isError, loadCharacters, pages } = useRequest()
+  const currentPage = ref<number>(1)
+  const pages = computed(() => (data?.value?.info?.pages ? data?.value?.info?.pages : 1))
+
+  const { data, isLoading, isError, execute } = useGetCharacters()
 
   async function getCharacters() {
     currentFilter.value = currentFilter.value === 'All' ? '' : currentFilter.value
-    await loadCharacters({
+    await execute({
       page: currentPage.value,
       name: currentSearch.value,
       species: currentFilter.value
@@ -59,7 +63,7 @@ export const useStateStore = defineStore('state', () => {
   }
 
   return {
-    data,
+    characters,
     favourites,
     filters,
     currentFilter,
