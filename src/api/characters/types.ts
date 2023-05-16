@@ -1,12 +1,9 @@
 import { type Ref } from 'vue'
 
 export type RequestParams = {
-  name?: string
   page?: number
-  status?: string
+  name?: string
   species?: string
-  type?: string
-  gender?: string
 }
 
 export type RequestResult<T> = {
