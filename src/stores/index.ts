@@ -14,7 +14,7 @@ export const useStateStore = defineStore('state', () => {
   const currentSearch = ref<string>('')
 
   const currentPage = ref<number>(1)
-  const pages = computed(() => (data?.value?.info?.pages ? data?.value?.info?.pages : 1))
+  const pages = computed(() => data?.value?.info?.pages || 1)
 
   const { data, isLoading, isError, execute } = useGetCharacters()
 
