@@ -20,6 +20,7 @@ const {
   addToFavourites,
   removeToFavourites
 } = useStateStore()
+
 const currentSize = ref('medium')
 
 const editSize = (size: string) => {
@@ -40,7 +41,7 @@ onMounted(() => {
       <MyCardSize @editSize="editSize" />
     </div>
     <ThePagination
-      :max-pages="stateStore.maxPages"
+      :max-pages="stateStore.pages"
       :current-page="stateStore.currentPage"
       @setCurrentPage="editCurrentPage"
     />
