@@ -20,6 +20,8 @@ export const useStateStore = defineStore('state', () => {
 
   async function getCharacters() {
     currentFilter.value = currentFilter.value === 'All' ? '' : currentFilter.value
+    console.log('Search:', currentSearch.value);
+    console.log('Filter:', currentFilter.value);
     await execute({
       page: currentPage.value,
       name: currentSearch.value,
