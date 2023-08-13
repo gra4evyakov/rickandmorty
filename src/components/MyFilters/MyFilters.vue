@@ -13,6 +13,7 @@ const editFilter = (filter: string) => {
 
 <template>
   <div class="filters">
+    <p>filter:</p>
     <div v-for="(filter, id) in props.filters" :key="id" class="filters-button">
       <input type="radio" name="filter" :id="filter" @change="editFilter(filter)" />
       <label :for="filter">{{ filter }}</label>

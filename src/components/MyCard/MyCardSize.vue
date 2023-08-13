@@ -10,6 +10,7 @@ const cardSizes: string[] = ['small', 'medium', 'large']
 
 <template>
   <div class="sizes">
+    <p>card size:</p>
     <div v-for="(size, id) in cardSizes" :key="id" class="sizes-button">
       <input type="radio" name="size" :id="size" @change="editSize(size)" />
       <label :for="size">{{ size }}</label>
