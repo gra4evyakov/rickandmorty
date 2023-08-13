@@ -5,23 +5,39 @@ import { useGetCharacters } from '@/api/characters/requests'
 import { type Character } from '@/services/interfaces/character'
 
 export const useStateStore = defineStore('state', () => {
-  const characters = computed(() => data?.value?.results)
-
-  const favourites = ref<Character[]>([])
+  const sort = ref<string[]>(['All', 'Name', 'Species'])
   const filters = ref<string[]>(['All', 'Human', 'Animal', 'Alien'])
+  const favourites = ref<Character[]>([])
 
-  const currentFilter = ref<string>('All')
+  const currentFilter = ref<string>('')
+  const currentSort = ref<string>('')
   const currentSearch = ref<string>('')
-
   const currentPage = ref<number>(1)
+
+  const characters = computed(() => {
+    const results = data?.value?.results;
+    if (!results) {
+      return [];
+    }
+
+    let sortedCharacters = [...results];
+    
+    if (currentSort.value === 'Name') {
+      return sortedCharacters.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (currentSort.value === 'Species') {
+      return sortedCharacters.sort((a, b) => a.species.localeCompare(b.species));
+    } else if (currentSort.value === '') {
+      return sortedCharacters;
+    }
+  });
+
   const pages = computed(() => data?.value?.info?.pages || 1)
+
 
   const { data, isLoading, isError, execute } = useGetCharacters()
 
   async function getCharacters() {
     currentFilter.value = currentFilter.value === 'All' ? '' : currentFilter.value
-    console.log('Search:', currentSearch.value);
-    console.log('Filter:', currentFilter.value);
     await execute({
       page: currentPage.value,
       name: currentSearch.value,
@@ -29,9 +45,13 @@ export const useStateStore = defineStore('state', () => {
     })
   }
 
-  function editFilter(filter: string) {
-    currentFilter.value = filter
+  function editFilter(newFilter: string) {
+    currentFilter.value = newFilter
     getCharacters()
+  }
+
+  function editSort(newSort: string) {
+    currentSort.value = newSort
   }
 
   function editSearch(value: string) {
@@ -68,7 +88,9 @@ export const useStateStore = defineStore('state', () => {
     characters,
     favourites,
     filters,
+    sort,
     currentFilter,
+    currentSort,
     currentSearch,
     currentPage,
     pages,
@@ -76,6 +98,7 @@ export const useStateStore = defineStore('state', () => {
     isError,
     getCharacters,
     editFilter,
+    editSort,
     editSearch,
     editCurrentPage,
     addToFavourites,

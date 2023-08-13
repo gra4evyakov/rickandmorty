@@ -5,6 +5,7 @@ import { useStateStore } from '@/stores/index'
 import MyFilters from '@/components/MyFilters/MyFilters.vue'
 import MyCard from '@/components/MyCard/MyCard.vue'
 import MySearch from '@/components/MySearch.vue'
+import MySort from '@/components/MySort/MySort.vue'
 import MyLoader from '@/components/MyLoader.vue'
 import MyError from '@/components/MyError.vue'
 import ThePagination from '@/components/ThePagination.vue'
@@ -15,6 +16,7 @@ const {
   getCharacters,
   setFavouritesData,
   editFilter,
+  editSort,
   editSearch,
   editCurrentPage,
   addToFavourites,
@@ -35,16 +37,19 @@ onMounted(() => {
 
 <template>
   <main class="content">
-    <div class="content-actions">
-      <MySearch @searchCharacters="editSearch" />
-      <MyFilters :filters="stateStore.filters" @editFilter="editFilter" />
-      <MyCardSize @editSize="editSize" />
+    <div class="content-tools">
+      <div class="content-actions">
+        <MySearch @searchCharacters="editSearch" />
+        <MyFilters :filters="stateStore.filters" @editFilter="editFilter" />
+        <MySort :sort="stateStore.sort" @editSort="editSort"/>
+        <MyCardSize @editSize="editSize" />
+      </div>
+      <ThePagination
+        :max-pages="stateStore.pages"
+        :current-page="stateStore.currentPage"
+        @setCurrentPage="editCurrentPage"
+      />
     </div>
-    <ThePagination
-      :max-pages="stateStore.pages"
-      :current-page="stateStore.currentPage"
-      @setCurrentPage="editCurrentPage"
-    />
     <MyLoader v-if="stateStore.isLoading" />
     <template v-else>
       <MyError v-if="stateStore.isError" />
@@ -67,7 +72,8 @@ onMounted(() => {
 
   &-actions {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
     row-gap: 15px;
     justify-content: space-between;
     margin-bottom: 15px;
@@ -79,6 +85,12 @@ onMounted(() => {
         gap: 15px;
       }
     }
+  }
+
+  &-tools {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
   }
 
   &-cards {
